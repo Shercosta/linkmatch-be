@@ -10,6 +10,13 @@ import (
 	"gorm.io/gorm"
 )
 
+// @Summary Register a new user
+// @Description Handles user registration
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body requests.RegisterRequest true "Register body"
+// @Router /auth/register [post]
 func Register(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var body requests.RegisterRequest
@@ -33,6 +40,13 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+// @Summary Login a user
+// @Description Handles user login
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body requests.RegisterRequest true "Login body"
+// @Router /auth/login [post]
 func Login(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var body requests.RegisterRequest
