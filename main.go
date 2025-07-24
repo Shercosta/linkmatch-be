@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"linkmatch-be/database"
+	"linkmatch-be/routes"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -13,9 +15,13 @@ func main() {
 	findEnv()
 	port := os.Getenv("PORT")
 
+	db := database.Connect()
+
 	router := gin.Default()
 
 	router.Use(cors.Default())
+
+	routes.RouteInit(router, db)
 
 	fmt.Println("Starting server on port", port)
 	router.Run(":" + port)
