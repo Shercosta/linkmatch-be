@@ -9,6 +9,6 @@ import (
 
 func RouteInit(r *gin.Engine, db *gorm.DB) {
 	r.Group("/auth").
-		POST("/login", controllers.Login).
+		POST("/login", controllers.Login(db)).
 		POST("/register", controllers.Register(db))
 }

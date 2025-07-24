@@ -33,8 +33,31 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func Login(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "login",
-	})
+func Login(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var body requests.RegisterRequest
+		if err := c.ShouldBindJSON(&body); err != nil {
+			responses.JSONError(c.Writer, http.StatusBadRequest, err.Error(), nil)
+			return
+		}
+
+		var user = services.GetUser(db, body.Username)
+		if user == nil {
+			responses.JSONError(c.Writer, http.StatusBadRequest, "User not found", nil)
+			return
+		}
+
+		result, err := services.Login(
+			db,
+			&body,
+			user,
+		)
+
+		if err != nil {
+			responses.JSONError(c.Writer, http.StatusBadRequest, err.Error(), nil)
+			return
+		}
+
+		responses.JSONSuccess(c.Writer, result, nil, nil)
+	}
 }
