@@ -9,6 +9,24 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/profile:
+    get:
+      consumes:
+      - application/json
+      description: Returns a JSON with the user that requested it
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - Bearer: []
+      summary: Get Profile
+      tags:
+      - Profile
   /auth/login:
     post:
       consumes:
@@ -45,22 +63,4 @@ paths:
       summary: Register a new user
       tags:
       - Auth
-  /profile:
-    get:
-      consumes:
-      - application/json
-      description: Returns a JSON with the username that requested it
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-      security:
-      - Bearer: []
-      summary: Get Profile
-      tags:
-      - Profile
 swagger: "2.0"

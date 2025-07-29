@@ -15,6 +15,12 @@ datasource db {
 }
 
 model User {
-  username String @id
-  password String
+  username           String  @id
+  password           String
+  name               String?
+  professional_title String?
+  cv_json            Json?
+  company_name       String?
+  location           String?
+  description        String?
 }

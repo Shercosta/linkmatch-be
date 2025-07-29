@@ -14,7 +14,7 @@ func RouteInit(r *gin.Engine, db *gorm.DB) {
 		POST("/login", controllers.Login(db)).
 		POST("/register", controllers.Register(db))
 
-	r.Group("/secure").Use(middlewares.AuthMiddleware()).
-		GET("/profile", controllers.Profile())
+	r.Group("/api").Use(middlewares.AuthMiddleware()).
+		GET("/profile", controllers.Profile(db))
 
 }
