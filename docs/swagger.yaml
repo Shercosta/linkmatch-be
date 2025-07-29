@@ -45,4 +45,22 @@ paths:
       summary: Register a new user
       tags:
       - Auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Returns a JSON with the username that requested it
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - Bearer: []
+      summary: Get Profile
+      tags:
+      - Profile
 swagger: "2.0"

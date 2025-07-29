@@ -9,14 +9,12 @@ import (
 )
 
 func RouteInit(r *gin.Engine, db *gorm.DB) {
-	auth := r.Group("/auth")
-	{
-		auth.POST("/login", controllers.Login(db))
-		auth.POST("/register", controllers.Register(db))
-	}
 
-	secured := r.Group("/secure").Use(middlewares.AuthMiddleware())
-	{
-		secured.GET("/profile", controllers.Profile())
-	}
+	r.Group("/auth").
+		POST("/login", controllers.Login(db)).
+		POST("/register", controllers.Register(db))
+
+	r.Group("/secure").Use(middlewares.AuthMiddleware()).
+		GET("/profile", controllers.Profile())
+
 }
