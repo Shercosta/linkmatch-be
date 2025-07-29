@@ -13,6 +13,7 @@
     "prisma": "^6.12.0"
   },
   "dependencies": {
-    "@prisma/client": "^6.12.0"
+    "@prisma/client": "^6.12.0",
+    "pdf-resume-parser": "^1.0.5"
   }
 }
