@@ -9,12 +9,23 @@ import (
 )
 
 func RouteInit(r *gin.Engine, db *gorm.DB) {
+	// Auth routes
+	auth := r.Group("/auth")
+	{
+		auth.POST("/login", controllers.Login(db))
+		auth.POST("/register", controllers.Register(db))
+	}
 
-	r.Group("/auth").
-		POST("/login", controllers.Login(db)).
-		POST("/register", controllers.Register(db))
+	// Protected API routes
+	api := r.Group("/api")
+	api.Use(middlewares.AuthMiddleware())
+	{
+		api.GET("/profile", controllers.Profile(db))
 
-	r.Group("/api").Use(middlewares.AuthMiddleware()).
-		GET("/profile", controllers.Profile(db)).
-		POST("/profile/parse-cv", controllers.ParseResume())
+		// Nested group under /api/profile
+		profile := api.Group("/profile")
+		{
+			profile.POST("/parse-cv", controllers.ParseResume())
+		}
+	}
 }

@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   requests.RegisterRequest:
     properties:
@@ -6,8 +7,19 @@ definitions:
       username:
         type: string
     type: object
+host: localhost:5995
 info:
-  contact: {}
+  contact:
+    email: support@linkmatch.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is the API documentation for the LinkMatch application.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: LinkMatch API
+  version: "1.0"
 paths:
   /api/profile:
     get:
@@ -25,6 +37,30 @@ paths:
       security:
       - Bearer: []
       summary: Get Profile
+      tags:
+      - Profile
+  /api/profile/parse-cv:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Returns a JSON with the parsed CV
+      parameters:
+      - description: CV file
+        in: formData
+        name: cv
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - Bearer: []
+      summary: Parse CV
       tags:
       - Profile
   /auth/login:
@@ -63,4 +99,12 @@ paths:
       summary: Register a new user
       tags:
       - Auth
+schemes:
+- http
+securityDefinitions:
+  Bearer:
+    description: Enter your bearer token in the format **Bearer &lt;token>**
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

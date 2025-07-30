@@ -29,6 +29,15 @@ func Profile(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+// @Summary Parse CV
+// @Description Returns a JSON with the parsed CV
+// @Tags Profile
+// @Accept multipart/form-data
+// @Produce json
+// @Param cv formData file true "CV file"
+// @Success 200 {object} map[string]interface{}
+// @Security Bearer
+// @Router /api/profile/parse-cv [post]
 func ParseResume() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		file, err := c.FormFile("cv")
