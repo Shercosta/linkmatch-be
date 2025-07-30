@@ -3,8 +3,11 @@ package controllers
 import (
 	"linkmatch-be/responses"
 	"linkmatch-be/services"
+	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -23,5 +26,51 @@ func Profile(db *gorm.DB) gin.HandlerFunc {
 		user := services.GetUserPublic(db, username)
 
 		responses.JSONSuccess(c.Writer, user, nil, nil)
+	}
+}
+
+func ParseResume() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		file, err := c.FormFile("cv")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		uuidFilenameWithoutPDF := uuid.NewString()
+		uuidFilename := uuidFilenameWithoutPDF + ".pdf"
+		saveDir := "./prisma/cv/"
+		savePath := saveDir + uuidFilename
+
+		// create directory
+		if err := os.MkdirAll(saveDir, os.ModePerm); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		// save file
+		if err := c.SaveUploadedFile(file, savePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if err := services.RunNodeParser(savePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		jsonData := services.GetJsonData(uuidFilenameWithoutPDF)
+
+		// delete file
+		if err := os.Remove(savePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		if err := os.Remove("./prisma/parsed-cv/" + uuidFilenameWithoutPDF + ".json"); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, jsonData)
 	}
 }

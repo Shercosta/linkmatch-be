@@ -4,4 +4,5 @@ node_modules
 
 /generated/prisma
 /cv/*.pdf
+/parsed-cv/*
 data.json
