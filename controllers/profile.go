@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"linkmatch-be/requests"
 	"linkmatch-be/responses"
 	"linkmatch-be/services"
 	"net/http"
@@ -81,5 +82,30 @@ func ParseResume() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, jsonData)
+	}
+}
+
+// @Summary Update Profile
+// @Description Updates the profile with the given body
+// @Tags Profile
+// @Accept json
+// @Produce json
+// @Param request body requests.ProfileRequest true "Profile body"
+// @Success 200 {object} models.UserPublic
+// @Security Bearer
+// @Router /api/profile [put]
+func UpdateProfile(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var body requests.ProfileRequest
+		if err := c.ShouldBindJSON(&body); err != nil {
+			responses.JSONError(c.Writer, http.StatusBadRequest, err.Error(), nil)
+			return
+		}
+
+		username := c.GetString("username")
+
+		result := services.UpdateProfile(db, username, &body)
+
+		responses.JSONSuccess(c.Writer, result, nil, nil)
 	}
 }

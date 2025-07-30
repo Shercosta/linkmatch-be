@@ -3,11 +3,14 @@ package services
 import (
 	"encoding/json"
 	"fmt"
+	"linkmatch-be/database/models"
+	"linkmatch-be/requests"
 	"os"
 	"os/exec"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func RunNodeParser(cvPath string) (err error) {
@@ -46,4 +49,22 @@ func GetJsonData(uuidName string) gin.H {
 
 	// Return the parsed data
 	return jsonData
+}
+
+func UpdateProfile(db *gorm.DB, username string, body *requests.ProfileRequest) models.UserPublic {
+	var user models.UserPublic
+	result := db.Where("username = ?", username).First(&user)
+	if result.Error == gorm.ErrRecordNotFound {
+		return models.UserPublic{}
+	}
+
+	user.Name = body.Name
+	user.ProfessionalTitle = body.ProfessionalTitle
+	user.CVJson = body.CVJson
+	user.CompanyName = body.CompanyName
+	user.Location = body.Location
+	user.Description = body.Description
+
+	db.Save(&user)
+	return user
 }

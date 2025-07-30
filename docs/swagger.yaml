@@ -1,5 +1,33 @@
 basePath: /
 definitions:
+  models.UserPublic:
+    properties:
+      company_name:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      professional_title:
+        type: string
+      username:
+        type: string
+    type: object
+  requests.ProfileRequest:
+    properties:
+      company_name:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      professional_title:
+        type: string
+    type: object
   requests.RegisterRequest:
     properties:
       password:
@@ -37,6 +65,29 @@ paths:
       security:
       - Bearer: []
       summary: Get Profile
+      tags:
+      - Profile
+    put:
+      consumes:
+      - application/json
+      description: Updates the profile with the given body
+      parameters:
+      - description: Profile body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserPublic'
+      security:
+      - Bearer: []
+      summary: Update Profile
       tags:
       - Profile
   /api/profile/parse-cv:

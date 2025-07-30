@@ -20,12 +20,12 @@ func RouteInit(r *gin.Engine, db *gorm.DB) {
 	api := r.Group("/api")
 	api.Use(middlewares.AuthMiddleware())
 	{
-		api.GET("/profile", controllers.Profile(db))
-
 		// Nested group under /api/profile
 		profile := api.Group("/profile")
 		{
+			profile.GET("/", controllers.Profile(db))
 			profile.POST("/parse-cv", controllers.ParseResume())
+			profile.PUT("/", controllers.UpdateProfile(db))
 		}
 	}
 }
