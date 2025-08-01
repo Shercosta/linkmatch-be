@@ -23,4 +23,17 @@ model User {
   company_name       String?
   location           String?
   description        String?
+
+  // relationship
+  Image Image[]
+}
+
+model Image {
+  id        String @id @default(uuid())
+  image_url String
+  username  String
+  position  Int
+
+  // relationship
+  User User @relation(fields: [username], references: [username])
 }

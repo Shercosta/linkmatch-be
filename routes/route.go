@@ -2,6 +2,7 @@ package routes
 
 import (
 	"linkmatch-be/controllers"
+	"linkmatch-be/controllers/devc"
 	"linkmatch-be/middlewares"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,11 @@ func RouteInit(r *gin.Engine, db *gorm.DB) {
 			profile.GET("/", controllers.Profile(db))
 			profile.POST("/parse-cv", controllers.ParseResume())
 			profile.PUT("/", controllers.UpdateProfile(db))
+		}
+
+		dev := api.Group("/dev")
+		{
+			dev.GET("/seed-image", devc.SeedImage(db))
 		}
 	}
 }
