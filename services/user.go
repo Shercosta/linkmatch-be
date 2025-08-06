@@ -18,7 +18,10 @@ func GetUser(db *gorm.DB, username string) *models.User {
 
 func GetUserPublic(db *gorm.DB, username string) *models.UserPublic {
 	var user models.UserPublic
-	result := db.Where("username = ?", username).First(&user)
+	result := db.
+		Preload("Image").
+		Where("username = ?", username).
+		First(&user)
 	if result.Error == gorm.ErrRecordNotFound {
 		return nil
 	}

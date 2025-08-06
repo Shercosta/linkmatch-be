@@ -10,6 +10,7 @@ type UserPublic struct {
 	CompanyName       *string         `json:"company_name"`
 	Location          *string         `json:"location"`
 	Description       *string         `json:"description"`
+	Image             []Image         `gorm:"foreignKey:Username;references:Username"`
 }
 
 func (UserPublic) TableName() string {
