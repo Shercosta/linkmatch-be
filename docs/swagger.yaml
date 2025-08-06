@@ -1,11 +1,45 @@
 basePath: /
 definitions:
+  models.Image:
+    properties:
+      id:
+        type: string
+      image_url:
+        type: string
+      position:
+        type: integer
+      user:
+        $ref: '#/definitions/models.User'
+      username:
+        type: string
+    type: object
+  models.User:
+    properties:
+      company_name:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      professional_title:
+        type: string
+      username:
+        type: string
+    type: object
   models.UserPublic:
     properties:
       company_name:
         type: string
       description:
         type: string
+      image:
+        items:
+          $ref: '#/definitions/models.Image'
+        type: array
       location:
         type: string
       name:
