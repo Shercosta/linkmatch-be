@@ -76,10 +76,10 @@ func ParseResume() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		if err := os.Remove("./prisma/parsed-cv/" + uuidFilenameWithoutPDF + ".json"); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
+		// if err := os.Remove("./prisma/parsed-cv/" + uuidFilenameWithoutPDF + ".json"); err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		// 	return
+		// }
 
 		c.JSON(http.StatusOK, jsonData)
 	}
