@@ -34,4 +34,6 @@ func RouteInit(r *gin.Engine, db *gorm.DB) {
 			dev.GET("/seed-image", devc.SeedImage(db))
 		}
 	}
+
+	r.GET("/users", controllers.Users(db))
 }

@@ -28,3 +28,15 @@ func GetUserPublic(db *gorm.DB, username string) *models.UserPublic {
 
 	return &user
 }
+
+func GetUsers(db *gorm.DB) []models.UserPublic {
+	var users []models.UserPublic
+
+	result := db.Find(&users)
+
+	if result.Error != nil {
+		return []models.UserPublic{}
+	}
+
+	return users
+}
